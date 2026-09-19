@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-[#F5F5F7]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfiles de Mercado & User Personas | StratBiz</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0066CC',
+                            600: '#0052a3',
+                            700: '#003d7a',
+                            900: '#001a33',
+                        },
+                        apple: {
+                            bg: '#F5F5F7',
+                            card: '#FFFFFF',
+                            text: '#1D1D1F',
+                            subtext: '#86868B',
+                            border: '#E5E5E7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Marked.js (Markdown Renderer) & Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Custom CSS Styles -->
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1D1D1F;
+            background-color: #F5F5F7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .heading-font {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(229, 229, 231, 0.8);
+        }
+
+        .btn-apple-primary {
+            background-color: #0066CC;
+            color: #FFFFFF;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-apple-primary:hover {
+            background-color: #0052a3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+        }
+
+        .btn-apple-secondary {
+            background-color: #E8E8ED;
+            color: #1D1D1F;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-apple-secondary:hover {
+            background-color: #DCDCE0;
+            color: #000000;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D1D1D6;
+            border-radius: 99px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #A1A1A6;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background-color: #FFFFFF !important;
+            }
+            .print-full-width {
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .print-break-inside-prevent {
+                break-inside: avoid;
+            }
+        }
+
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .animate-pulse-subtle {
+            animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-[#E5E5E7] bg-white/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-blue-400 flex items-center justify-center text-white font-bold shadow-md shadow-brand-500/20">
+                    <i class="fa-solid fa-chart-user text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="heading-font text-base sm:text-lg font-bold text-apple-text tracking-tight flex items-center gap-2">
+                        Perfiles de Mercado
+                        <span class="text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-600 font-semibold border border-brand-100">Bottom-Up AI</span>
+                    </h1>
+                    <p class="text-xs text-apple-subtext hidden sm:block">Metodología Bottom-Up centrada en Clientes Reales • StratBiz</p>
+                </div>
+            </div>
+
+            <!-- Header Action Buttons -->
+            <div class="flex items-center gap-2">
+                <button onclick="app.openApiKeyModal()" class="text-xs btn-apple-secondary px-3 py-2 rounded-lg font-medium flex items-center gap-1.5 no-print" title="Configurar Clave API Gemini">
+                    <i class="fa-solid fa-key text-brand-600"></i>
+                    <span id="apiKeyStatusText" class="hidden md:inline">API Key</span>
+                </button>
+
+                <button onclick="window.print()" class="text-xs btn-apple-secondary px-3 py-2 rounded-lg font-medium flex items-center gap-1.5 no-print">
+                    <i class="fa-solid fa-print"></i>
+                    <span class="hidden md:inline">Imprimir</span>
+                </button>
+
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-xs bg-slate-900 text-white hover:bg-slate-800 px-3 py-2 rounded-lg font-medium transition flex items-center gap-1.5 no-print">
+                    <i class="fa-brands fa-github text-sm"></i>
+                    <span class="hidden sm:inline">GitHub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- SIDEBAR FORM (3.5 / 12) -->
+        <section class="lg:col-span-4 xl:col-span-4 flex flex-col gap-5 no-print">
+            <div class="bg-white rounded-2xl p-5 border border-apple-border shadow-sm">
+                
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-apple-border">
+                    <h2 class="heading-font text-sm font-bold text-apple-text flex items-center gap-2">
+                        <i class="fa-solid fa-[#0066CC] fa-sliders text-brand-500"></i>
+                        Parámetros del Proyecto
+                    </h2>
+                    <span class="text-[11px] text-apple-subtext font-mono">StratBiz v2.5</span>
+                </div>
+
+                <!-- Presets Quick Selector -->
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-apple-text mb-1.5">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-500 mr-1"></i> Cargar Preset de Ejemplo:
+                    </label>
+                    <select id="presetSelect" onchange="app.loadPreset(this.value)" class="w-full text-xs rounded-xl border border-apple-border p-2.5 bg-[#FBFBFD] focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
+                        <option value="">-- Seleccionar un nicho o preset --</option>
+                        <option value="saas_b2b">B2B SaaS: Software de Gestión para Agencias</option>
+                        <option value="d2c_ecommerce">D2C Ecommerce: Cosmética Orgánica Premium</option>
+                        <option value="edtech">EdTech: Bootcamps de Inteligencia Artificial</option>
+                        <option value="b2b_cybersecurity">Servicios B2B: Ciberseguridad para PYMEs</option>
+                    </select>
+                </div>
+
+                <!-- Input Form -->
+                <form id="marketForm" onsubmit="app.generateProfile(event)" class="space-y-3.5">
+                    
+                    <div>
+                        <label class="block text-xs font-medium text-apple-text mb-1">Nombre del Negocio o Idea</label>
+                        <input type="text" id="businessName" placeholder="Ej: AgencyFlow, LuxeSkin, CodeAI..." required
+                            class="w-full text-xs rounded-xl border border-apple-border p-2.5 bg-[#FBFBFD] focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-apple-text mb-1">Sector o Industria</label>
+                        <input type="text" id="industry" placeholder="Ej: Software B2B, Salud y Bienestar, EdTech..." required
+                            class="w-full text-xs rounded-xl border border-apple-border p-2.5 bg-[#FBFBFD] focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-apple-text mb-1">Modelo de Monetización & Precio Ticket</label>
+                        <input type="text" id="pricingModel" placeholder="Ej: Suscripción SaaS $150/mes, Producto $45 USD..." required
+                            class="w-full text-xs rounded-xl border border-apple-border p-2.5 bg-[#FBFBFD] focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-apple-text mb-1">Cliente Objetivo Hipotético</label>
+                        <input type="text" id="targetAudience" placeholder="Ej: Directores de operaciones en agencias de 10-50 empleados" required
+                            class="w-full text-xs rounded-xl border border-apple-border p-2.5 bg-[#FBFBFD] focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-apple-text mb-1">Problema Clave o Dolor Principal</label>
+                        <textarea id="coreProblem" rows="3" placeholder="Ej: Pérdida de rentabilidad por mala estimación de horas en proyectos y fricción al comunicarse con clientes." required
+                            class="w-full text-xs rounded-xl border border-apple-border p-2.5 bg-[#FBFBFD] focus:ring-2 focus:ring-brand-500 focus:outline-none transition resize-none"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="btnSubmit" class="w-full btn-apple-primary py-3 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 shadow-sm mt-2">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Generar Perfil de Mercado con IA</span>
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- Bottom-Up Methodology Info Card -->
+            <div class="bg-gradient-to-br from-brand-50 to-blue-50/50 rounded-2xl p-4 border border-brand-100 text-xs text-apple-text">
+                <h3 class="font-bold text-brand-700 flex items-center gap-1.5 mb-1.5">
+                    <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                    ¿Por qué el Enfoque Bottom-Up?
+                </h3>
+                <p class="text-[11px] text-slate-600 leading-relaxed">
+                    A diferencia del modelo Top-Down (basado en porcentajes teóricos de mercado global), el análisis <strong>Bottom-Up de StratBiz</strong> parte de clientes reales individualizables, problemas operacionales específicos, costos de adquisición directos y la disposición real a pagar.
+                </p>
+            </div>
+        </section>
+
+        <!-- RESULTS PANEL (8 / 12) -->
+        <section class="lg:col-span-8 xl:col-span-8 flex flex-col gap-4">
+            
+            <!-- Welcome / Empty State -->
+            <div id="emptyState" class="bg-white rounded-2xl p-8 sm:p-12 border border-apple-border text-center flex flex-col items-center justify-center min-h-[480px]">
+                <div class="w-20 h-20 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 text-3xl mb-4 shadow-inner">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                </div>
+                <h3 class="heading-font text-lg font-bold text-apple-text mb-2">Diseña tu Perfil de Mercado Estratégico</h3>
+                <p class="text-xs text-apple-subtext max-w-md mb-6 leading-relaxed">
+                    Ingresa los datos de tu producto o selecciona uno de nuestros presets predefinidos para generar un análisis completo de Buyer Personas, Canvas de Valor y Guión de Validación Bottom-Up.
+                </p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <button onclick="app.loadPreset('saas_b2b')" class="text-xs btn-apple-secondary px-3 py-2 rounded-lg font-medium">
+                        <i class="fa-solid fa-play text-brand-500 mr-1"></i> Probar Preset SaaS
+                    </button>
+                    <button onclick="app.loadPreset('d2c_ecommerce')" class="text-xs btn-apple-secondary px-3 py-2 rounded-lg font-medium">
+                        <i class="fa-solid fa-play text-brand-500 mr-1"></i> Probar Preset Ecommerce
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading Spinner State -->
+            <div id="loadingState" class="hidden bg-white rounded-2xl p-12 border border-apple-border text-center flex-col items-center justify-center min-h-[480px]">
+                <div class="relative w-16 h-16 mb-6">
+                    <div class="absolute inset-0 rounded-full border-4 border-brand-100"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-brand-500 border-t-transparent animate-spin"></div>
+                    <div class="absolute inset-0 flex items-center justify-center text-brand-600 font-bold text-xs">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                </div>
+                <h3 class="heading-font text-base font-bold text-apple-text mb-1">Analizando Mercado y Sintetizando Personas...</h3>
+                <p class="text-xs text-apple-subtext animate-pulse-subtle max-w-xs">
+                    Aplicando metodología Bottom-Up de StratBiz y modelando comportamiento de clientes...
+                </p>
+            </div>
+
+            <!-- Content Active State Container -->
+            <div id="outputContainer" class="hidden flex-col gap-4">
+                
+                <!-- Action Bar above results -->
+                <div class="flex flex-wrap items-center justify-between gap-2 bg-white rounded-xl p-3 border border-apple-border shadow-sm no-print">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <span id="outputTitle" class="text-xs font-bold text-apple-text">Perfil Generado</span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="app.copyMarkdown()" class="text-xs btn-apple-secondary px-3 py-1.5 rounded-lg font-medium flex items-center gap-1.5" title="Copiar texto en formato Markdown">
+                            <i class="fa-solid fa-copy text-slate-500"></i> Copiar Markdown
+                        </button>
+                        <button onclick="app.downloadJSON()" class="text-xs btn-apple-secondary px-3 py-1.5 rounded-lg font-medium flex items-center gap-1.5" title="Exportar datos estructurados en JSON">
+                            <i class="fa-solid fa-download text-slate-500"></i> JSON
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <div class="bg-white rounded-xl p-1.5 border border-apple-border flex flex-wrap gap-1 no-print">
+                    <button onclick="app.switchTab('tab-personas')" id="btn-tab-personas" class="tab-btn flex-1 min-w-[110px] text-xs font-semibold py-2 px-3 rounded-lg transition text-white bg-brand-500 shadow-sm">
+                        <i class="fa-solid fa-user-gear mr-1"></i> User Personas
+                    </button>
+                    <button onclick="app.switchTab('tab-canvas')" id="btn-tab-canvas" class="tab-btn flex-1 min-w-[110px] text-xs font-semibold py-2 px-3 rounded-lg transition text-apple-subtext hover:bg-slate-100">
+                        <i class="fa-solid fa-cubes mr-1"></i> Canvas de Valor
+                    </button>
+                    <button onclick="app.switchTab('tab-gtm')" id="btn-tab-gtm" class="tab-btn flex-1 min-w-[110px] text-xs font-semibold py-2 px-3 rounded-lg transition text-apple-subtext hover:bg-slate-100">
+                        <i class="fa-solid fa-chart-line mr-1"></i> Go-To-Market
+                    </button>
+                    <button onclick="app.switchTab('tab-interview')" id="btn-tab-interview" class="tab-btn flex-1 min-w-[110px] text-xs font-semibold py-2 px-3 rounded-lg transition text-apple-subtext hover:bg-slate-100">
+                        <i class="fa-solid fa-comments mr-1"></i> Guión Entrevistas
+                    </button>
+                    <button onclick="app.switchTab('tab-raw')" id="btn-tab-raw" class="tab-btn flex-1 min-w-[110px] text-xs font-semibold py-2 px-3 rounded-lg transition text-apple-subtext hover:bg-slate-100">
+                        <i class="fa-solid fa-file-text mr-1"></i> Informe Completo
+                    </button>
+                </div>
+
+                <!-- TAB CONTENTS -->
+                
+                <!-- TAB 1: User Personas -->
+                <div id="tab-personas" class="tab-content flex flex-col gap-4">
+                    <div id="personasCardsContainer" class="grid grid-cols-1 gap-4">
+                        <!-- Dynamic Persona Cards rendered here -->
+                    </div>
+                </div>
+
+                <!-- TAB 2: Canvas de Valor -->
+                <div id="tab-canvas" class="tab-content hidden flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-6 border border-apple-border shadow-sm">
+                        <h3 class="heading-font text-sm font-bold text-apple-text mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-brand-500"></i>
+                            Matriz de Propuesta de Valor (Bottom-Up)
+                        </h3>
+                        <div id="valueCanvasContent" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Dynamic Canvas Content -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Strategy Go-To-Market -->
+                <div id="tab-gtm" class="tab-content hidden flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-6 border border-apple-border shadow-sm">
+                        <h3 class="heading-font text-sm font-bold text-apple-text mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-bullseye text-brand-500"></i>
+                            Estrategia de Captación Bottom-Up & Canales
+                        </h3>
+                        <div id="gtmContent" class="space-y-4">
+                            <!-- Dynamic GTM Content -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: Guión de Entrevistas -->
+                <div id="tab-interview" class="tab-content hidden flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-6 border border-apple-border shadow-sm">
+                        <h3 class="heading-font text-sm font-bold text-apple-text mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-question text-brand-500"></i>
+                            Guión de Validación en Terreno ("The Mom Test")
+                        </h3>
+                        <p class="text-xs text-apple-subtext mb-4">
+                            Preguntas estratégicas diseñadas para no sesgar las respuestas del cliente y validar el dolor real sin vender la solución prematuramente.
+                        </p>
+                        <div id="interviewContent" class="space-y-3">
+                            <!-- Dynamic Interview Questions -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: Raw Markdown Report -->
+                <div id="tab-raw" class="tab-content hidden flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-6 border border-apple-border shadow-sm">
+                        <div id="markdownRendered" class="prose prose-sm max-w-none text-xs text-apple-text space-y-3">
+                            <!-- Rendered markdown content -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-apple-border bg-white py-6 mt-12 text-center text-xs text-apple-subtext no-print">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <strong>Perfiles de mercado</strong> • Metodología Bottom-Up centrada en Clientes Reales
+            </div>
+            <div>
+                Consultor Senior: <strong>Ernesto Juárez</strong> | Desarrollado por <span class="text-brand-500 font-bold">StratBiz</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- API KEY MODAL -->
+    <div id="apiKeyModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-apple-border space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-apple-border">
+                <h3 class="heading-font text-sm font-bold text-apple-text flex items-center gap-2">
+                    <i class="fa-solid fa-key text-brand-500"></i>
+                    Configurar Clave API Gemini
+                </h3>
+                <button onclick="app.closeApiKeyModal()" class="text-slate-400 hover:text-slate-600 text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-apple-subtext leading-relaxed">
+                Ingresa tu clave de API de Google Gemini para habilitar la generación en tiempo real con Inteligencia Artificial. Si la dejas en blanco, la aplicación utilizará el motor de plantillas simuladas de alta calidad de StratBiz.
+            </p>
+
+            <div>
+                <label class="block text-xs font-semibold text-apple-text mb-1">Gemini API Key</label>
+                <div class="relative">
+                    <input type="password" id="apiKeyInput" placeholder="AIzaSy..." 
+                        class="w-full text-xs rounded-xl border border-apple-border p-2.5 pr-10 bg-[#FBFBFD] focus:ring-2 focus:ring-brand-500 focus:outline-none font-mono">
+                    <button onclick="app.toggleApiKeyVisibility()" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-xs">
+                        <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="app.closeApiKeyModal()" class="btn-apple-secondary px-4 py-2 rounded-xl text-xs font-medium">
+                    Cancelar
+                </button>
+                <button onclick="app.saveApiKey()" class="btn-apple-primary px-4 py-2 rounded-xl text-xs font-semibold">
+                    Guardar Clave
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION CORE -->
+    <script>
+        const DEFAULT_API_KEY = "";
+
+        const PRESETS = {
+            saas_b2b: {
+                businessName: "AgencyFlow",
+                industry: "SaaS / Software B2B de Gestión",
+                pricingModel: "Suscripción SaaS $149 USD/mes por agencia",
+                targetAudience: "Fundadores y Directores de Operaciones en Agencias Digitales de 10 a 45 empleados",
+                coreProblem: "Fuga de margen de beneficio por mala asignación de horas del equipo, sobretrabajo no cobrado y falta de visibilidad en tiempo real de rentabilidad por proyecto."
+            },
+            d2c_ecommerce: {
+                businessName: "LuxeSkin Organics",
+                industry: "Cosmética & Cuidado Personal D2C",
+                pricingModel: "Venta directa e-commerce $45 USD ticket promedio",
+                targetAudience: "Mujeres de 28 a 45 años profesionales con interés en sostenibilidad y formulaciones limpias",
+                coreProblem: "Desconfianza en los ingredientes sintéticos de marcas tradicionales y frustración con cosméticos naturales que no ofrecen resultados visibles inmediatos."
+            },
+            edtech: {
+                businessName: "CodeAI Academy",
+                industry: "Educación Tech / Bootcamps",
+                pricingModel: "Matrícula de $890 USD o 3 cuotas sin interés",
+                targetAudience: "Desarrolladores Junior y Mid-level buscando especializarse en IA Aplicada y Prompt Engineering",
+                coreProblem: "Obsolescencia acelerada de sus habilidades técnicas tradicionales y temor a ser desplazados por la automatización sin saber aplicar IA en producción."
+            },
+            b2b_cybersecurity: {
+                businessName: "ShieldPyme",
+                industry: "Ciberseguridad B2B / Servicios Gestionados",
+                pricingModel: "Retainer mensual de $450 USD",
+                targetAudience: "Gerentes Generales y de TI en PYMEs Fintech y Ecommerce de 20-100 empleados",
+                coreProblem: "Vulnerabilidad ante ransomware e incumplimiento de normativas de datos sin el presupuesto necesario para contratar un CISO interno a tiempo completo."
+            }
+        };
+
+        const app = {
+            apiKey: '',
+            currentData: null,
+
+            init() {
+                const storedKey = window.localStorage ? localStorage.getItem('stratbiz_gemini_key') : null;
+                if (storedKey && storedKey.trim() !== '') {
+                    this.apiKey = storedKey.trim();
+                } else {
+                    this.apiKey = DEFAULT_API_KEY;
+                }
+                this.updateApiKeyStatusUI();
+            },
+
+            openApiKeyModal() {
+                document.getElementById('apiKeyInput').value = this.apiKey;
+                document.getElementById('apiKeyModal').classList.remove('hidden');
+            },
+
+            closeApiKeyModal() {
+                document.getElementById('apiKeyModal').classList.add('hidden');
+            },
+
+            toggleApiKeyVisibility() {
+                const input = document.getElementById('apiKeyInput');
+                const icon = document.getElementById('eyeIcon');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-slash-eye');
+                    icon.classList.add('fa-eye');
+                }
+            },
+
+            saveApiKey() {
+                const val = document.getElementById('apiKeyInput').value.trim();
+                this.apiKey = val;
+                if (window.localStorage) {
+                    localStorage.setItem('stratbiz_gemini_key', val);
+                }
+                this.updateApiKeyStatusUI();
+                this.closeApiKeyModal();
+            },
+
+            updateApiKeyStatusUI() {
+                const btnText = document.getElementById('apiKeyStatusText');
+                if (this.apiKey) {
+                    btnText.innerText = "API Key (Activa)";
+                } else {
+                    btnText.innerText = "API Key (Demo)";
+                }
+            },
+
+            loadPreset(key) {
+                if (!key || !PRESETS[key]) return;
+                const p = PRESETS[key];
+                document.getElementById('businessName').value = p.businessName;
+                document.getElementById('industry').value = p.industry;
+                document.getElementById('pricingModel').value = p.pricingModel;
+                document.getElementById('targetAudience').value = p.targetAudience;
+                document.getElementById('coreProblem').value = p.coreProblem;
+            },
+
+            async generateProfile(event) {
+                event.preventDefault();
+
+                const businessName = document.getElementById('businessName').value.trim();
+                const industry = document.getElementById('industry').value.trim();
+                const pricingModel = document.getElementById('pricingModel').value.trim();
+                const targetAudience = document.getElementById('targetAudience').value.trim();
+                const coreProblem = document.getElementById('coreProblem').value.trim();
+
+                // Show Loading UI
+                document.getElementById('emptyState').classList.add('hidden');
+                document.getElementById('outputContainer').classList.add('hidden');
+                document.getElementById('loadingState').classList.remove('hidden');
+                document.getElementById('loadingState').classList.add('flex');
+
+                try {
+                    let resultData;
+                    if (this.apiKey && this.apiKey.length > 10) {
+                        resultData = await this.callGeminiApi({ businessName, industry, pricingModel, targetAudience, coreProblem });
+                    } else {
+                        // Fallback simulated engine with realistic delay
+                        await new Promise(resolve => setTimeout(resolve, 1800));
+                        resultData = this.generateSimulatedData({ businessName, industry, pricingModel, targetAudience, coreProblem });
+                    }
+
+                    this.currentData = resultData;
+                    this.renderResults(resultData);
+
+                    // Confetti effect on success
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+                    }
+
+                } catch (error) {
+                    console.error("Error al generar el perfil:", error);
+                    alert("Ocurrió un error al generar el perfil. Por favor verifica tu conexión o clave de API Gemini.");
+                    document.getElementById('loadingState').classList.add('hidden');
+                    document.getElementById('emptyState').classList.remove('hidden');
+                }
+            },
+
+            async callGeminiApi(params) {
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.apiKey}`;
+                
+                const promptText = `
+                Actúa como el Consultor Senior Ernesto Juárez de StratBiz, experto en metodología Bottom-Up para análisis de mercado.
+                Genera un análisis completo en JSON estructurado para el siguiente proyecto:
+
+                - Nombre del Negocio: ${params.businessName}
+                - Industria: ${params.industry}
+                - Modelo/Precio: ${params.pricingModel}
+                - Audiencia Hipotética: ${params.targetAudience}
+                - Problema Clave: ${params.coreProblem}
+
+                Debes devolver UNICAMENTE un objeto JSON con la siguiente estructura exacta sin código markdown envolvente fuera del JSON:
+                {
+                  "projectName": "string",
+                  "summary": "string",
+                  "buyerPersonas": [
+                    {
+                      "name": "string",
+                      "role": "string",
+                      "age": "string",
+                      "archetype": "string",
+                      "demographics": "string",
+                      "goals": ["string"],
+                      "pains": ["string"],
+                      "buyingTrigger": "string",
+                      "objections": ["string"]
+                    }
+                  ],
+                  "valueCanvas": {
+                    "painsToSolve": ["string"],
+                    "valueDrivers": ["string"],
+                    "keyFeatures": ["string"],
+                    "differentiators": ["string"]
+                  },
+                  "gtmStrategy": {
+                    "primaryChannels": ["string"],
+                    "messagingHooks": ["string"],
+                    "bottomUpTactics": ["string"]
+                  },
+                  "interviewQuestions": [
+                    {
+                      "objective": "string",
+                      "question": "string",
+                      "whatToListenFor": "string"
+                    }
+                  ],
+                  "rawMarkdown": "string (Informe analítico completo en markdown detallando metodología Bottom-Up)"
+                }`;
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptText }] }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Gemini API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const rawText = data.candidates[0].content.parts[0].text;
+                
+                // Clean potential Markdown codeblock wrapping
+                const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+                return JSON.parse(cleanJson);
+            },
+
+            generateSimulatedData(params) {
+                return {
+                    projectName: params.businessName,
+                    summary: `Análisis Bottom-Up para ${params.businessName} en el sector de ${params.industry}. Validado para pricing de ${params.pricingModel}.`,
+                    buyerPersonas: [
+                        {
+                            name: "Carlos Mendoza",
+                            role: "Director de Operaciones / Decision Maker",
+                            age: "38 - 45 años",
+                            archetype: "El Optimizador Eficiente",
+                            demographics: "Profesional universitario, liderazgo de equipos de 10-50 personas.",
+                            goals: [
+                                "Eliminar cuellos de botella en la entrega de proyectos.",
+                                "Aumentar la rentabilidad operativa un 18% sin contratar más personal.",
+                                "Tener claridad total de KPIs en un solo dashboard."
+                            ],
+                            pains: [
+                                "Horas de equipo desperdiciadas en tareas administrativas repetitivas.",
+                                "Resistencia del equipo al adoptar herramientas complejas.",
+                                "Falta de visibilidad de márgenes reales por cliente."
+                            ],
+                            buyingTrigger: "Perder un cliente importante por fallas en tiempos de entrega o sufrir margen negativo en un trimestre.",
+                            objections: [
+                                "¿Cuánto tiempo le tomará a mi equipo aprender a usar esta solución?",
+                                "¿Realmente justifica el costo mensual comparado con nuestras hojas de cálculo actuales?"
+                            ]
+                        },
+                        {
+                            name: "Sofía Ramírez",
+                            role: "Líder de Equipo / End User",
+                            age: "28 - 34 años",
+                            archetype: "La Ejecutora Pragmática",
+                            demographics: "Nativa digital, enfocada en entregables diarios y gestión directa.",
+                            goals: [
+                                "Reducir la sobrecarga de reuniones de estatus.",
+                                "Documentar procesos de forma ágil sin perder tiempo.",
+                                "Demostrar resultados de alto valor a la dirección."
+                            ],
+                            pains: [
+                                "Herramientas fragmentadas que obligan a duplicar el trabajo.",
+                                "Notificaciones constantes que interrumpen el trabajo profundo.",
+                                "Falta de plantillas estandarizadas para proyectos recurrentes."
+                            ],
+                            buyingTrigger: "Agotamiento (burnout) en el equipo debido a la desorganización de procesos.",
+                            objections: [
+                                "No quiero otra herramienta pesada que me pida llenar 10 campos por tarea."
+                            ]
+                        }
+                    ],
+                    valueCanvas: {
+                        painsToSolve: [
+                            "Opacidad en los costos operativos reales.",
+                            "Frustración por mala comunicación entre departamentos.",
+                            "Tiempos muertos por aprobaciones manuales."
+                        ],
+                        valueDrivers: [
+                            "Automatización de flujo de trabajo punta a punta.",
+                            "Reportes ejecutivos automáticos de rentabilidad.",
+                            "Onboarding asistido en menos de 48 horas."
+                        ],
+                        keyFeatures: [
+                            "Dashboard inteligente Bottom-Up.",
+                            "Integración fluida con herramientas existentes.",
+                            "Plantillas preconfiguradas por industria."
+                        ],
+                        differentiators: [
+                            "Enfoque pragmático sin la complejidad de software enterprise tradicional.",
+                            "Modelo de precios predecible escalable por resultados."
+                        ]
+                    },
+                    gtmStrategy: {
+                        primaryChannels: [
+                            "LinkedIn Outbound dirigido a Directores de Operaciones.",
+                            "Comunidades profesionales y webinars técnicos de nicho.",
+                            "Estrategia de contenidos Bottom-Up (Estudios de caso y calculadoras de ROI)."
+                        ],
+                        messagingHooks: [
+                            "\"Descubre exactamente dónde tu negocio está perdiendo margen operacional sin saberlo.\"",
+                            "\"Deja de gestionar proyectos a ciegas y toma el control de tu rentabilidad hoy mismo.\""
+                        ],
+                        bottomUpTactics: [
+                            "Prueba gratuita funcional de 14 días con datos de muestra.",
+                            "Calculadora interactiva de desperdicio operativo en landing page.",
+                            "Incentivos por referidos dentro del producto."
+                        ]
+                    },
+                    interviewQuestions: [
+                        {
+                            objective: "Validar frecuencia e intensidad del dolor actual",
+                            question: "¿Cómo resuelven actualmente la medición de rentabilidad por cliente y qué es lo más frustrante de ese proceso?",
+                            whatToListenFor: "Si usan hojas de cálculo complejas o parches temporales y cuántas horas invierten manualmente."
+                        },
+                        {
+                            objective: "Evaluar el costo económico del problema",
+                            question: "¿Cuánto dinero o cuántas horas calcula que se pierden al mes debido a esta ineficiencia?",
+                            whatToListenFor: "Si el dolor tiene un número claro o si es solo una molestia vaga."
+                        },
+                        {
+                            objective: "Validar procesos de compra y presupuestos reales",
+                            question: "¿Cuándo fue la última vez que evaluaron una solución para esto y quién tuvo la última palabra en la decisión?",
+                            whatToListenFor: "Ciclos de venta reales y barreras presupuestarias."
+                        }
+                    ],
+                    rawMarkdown: `# Perfil de Mercado Bottom-Up: ${params.businessName}\n\n**Consultoría StratBiz** | Consultor: Ernesto Juárez\n\n--- \n\n## 1. Resumen Ejecutivo\nEl proyecto **${params.businessName}** aborda el sector de **${params.industry}** mediante una propuesta enfocada en la resolución de problemas operacionales críticos. Con un esquema de monetización basado en **${params.pricingModel}**, la estrategia de penetración se fundamenta en validar el valor real con usuarios finales antes de escalar la venta.\n\n## 2. Metodología Bottom-Up Aplicada\nA diferencia de las proyecciones macroeconómicas globales, el análisis Bottom-Up cuantifica el potencial de mercado agregando unidades individuales de clientes comprobables:\n- **ICP Primario:** ${params.targetAudience}\n- **Problema Núcleo:** ${params.coreProblem}\n- **Trigger de Compra:** Fricción operativa insostenible o pérdida financiera directa.\n\n## 3. Plan de Acción Inmediato\n1. Ejecutar las 3 entrevistas de validación con el guión diseñado.\n2. Medir tasa de conversión en canal de prueba LinkedIn Outbound.\n3. Ajustar el mensaje clave en función de las objeciones recolectadas.`
+                };
+            },
+
+            renderResults(data) {
+                // Hide loader, show container
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('loadingState').classList.remove('flex');
+                document.getElementById('outputContainer').classList.remove('hidden');
+                document.getElementById('outputContainer').classList.add('flex');
+
+                document.getElementById('outputTitle').innerText = `Perfil: ${data.projectName}`;
+
+                // 1. Render Buyer Personas Cards
+                const personasContainer = document.getElementById('personasCardsContainer');
+                personasContainer.innerHTML = '';
+
+                data.buyerPersonas.forEach((p, index) => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-2xl p-6 border border-apple-border shadow-sm flex flex-col gap-4";
+                    card.innerHTML = `
+                        <div class="flex items-start justify-between border-b border-apple-border pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold text-lg">
+                                    ${p.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <h4 class="heading-font text-base font-bold text-apple-text">${p.name}</h4>
+                                    <p class="text-xs text-brand-600 font-medium">${p.role}</p>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
+                                ${p.archetype || 'Persona ' + (index+1)}
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="space-y-2">
+                                <h5 class="font-bold text-apple-text flex items-center gap-1.5">
+                                    <i class="fa-solid fa-bullseye text-emerald-500"></i> Objetivos Principales
+                                </h5>
+                                <ul class="list-disc list-inside text-apple-subtext space-y-1">
+                                    ${p.goals.map(g => `<li>${g}</li>`).join('')}
+                                </ul>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h5 class="font-bold text-apple-text flex items-center gap-1.5">
+                                    <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> Frustraciones & Dolores
+                                </h5>
+                                <ul class="list-disc list-inside text-apple-subtext space-y-1">
+                                    ${p.pains.map(pain => `<li>${pain}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-apple-border text-xs grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="bg-slate-50 p-3 rounded-xl">
+                                <strong class="text-apple-text block mb-1">Trigger de Compra:</strong>
+                                <span class="text-apple-subtext">${p.buyingTrigger}</span>
+                            </div>
+                            <div class="bg-amber-50/60 border border-amber-100 p-3 rounded-xl">
+                                <strong class="text-amber-900 block mb-1">Principales Objeciones:</strong>
+                                <ul class="list-disc list-inside text-amber-800 space-y-0.5">
+                                    ${p.objections.map(o => `<li>${o}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    personasContainer.appendChild(card);
+                });
+
+                // 2. Render Value Canvas
+                const valueCanvas = document.getElementById('valueCanvasContent');
+                const vc = data.valueCanvas;
+                valueCanvas.innerHTML = `
+                    <div class="bg-rose-50/50 border border-rose-100 rounded-xl p-4 space-y-2">
+                        <h4 class="font-bold text-xs text-rose-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-heart-crack"></i> Dolores a Resolver
+                        </h4>
+                        <ul class="text-xs text-slate-700 list-disc list-inside space-y-1">
+                            ${vc.painsToSolve.map(i => `<li>${i}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="bg-emerald-50/50 border border-emerald-100 rounded-xl p-4 space-y-2">
+                        <h4 class="font-bold text-xs text-emerald-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-gem"></i> Generadores de Valor
+                        </h4>
+                        <ul class="text-xs text-slate-700 list-disc list-inside space-y-1">
+                            ${vc.valueDrivers.map(i => `<li>${i}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50/50 border border-blue-100 rounded-xl p-4 space-y-2">
+                        <h4 class="font-bold text-xs text-brand-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-microchip"></i> Características Clave
+                        </h4>
+                        <ul class="text-xs text-slate-700 list-disc list-inside space-y-1">
+                            ${vc.keyFeatures.map(i => `<li>${i}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="bg-purple-50/50 border border-purple-100 rounded-xl p-4 space-y-2">
+                        <h4 class="font-bold text-xs text-purple-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-award"></i> Diferenciadores Clave
+                        </h4>
+                        <ul class="text-xs text-slate-700 list-disc list-inside space-y-1">
+                            ${vc.differentiators.map(i => `<li>${i}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                // 3. Render GTM Strategy
+                const gtmContent = document.getElementById('gtmContent');
+                const gtm = data.gtmStrategy;
+                gtmContent.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-xl space-y-2 border border-slate-200">
+                            <h4 class="font-bold text-xs text-apple-text flex items-center gap-1.5">
+                                <i class="fa-solid fa-paper-plane text-brand-500"></i> Canales Primarios
+                            </h4>
+                            <ul class="text-xs text-apple-subtext list-disc list-inside space-y-1">
+                                ${gtm.primaryChannels.map(c => `<li>${c}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl space-y-2 border border-slate-200">
+                            <h4 class="font-bold text-xs text-apple-text flex items-center gap-1.5">
+                                <i class="fa-solid fa-quote-left text-amber-500"></i> Hooks de Mensaje
+                            </h4>
+                            <ul class="text-xs text-apple-subtext list-disc list-inside space-y-1">
+                                ${gtm.messagingHooks.map(h => `<li>${h}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl space-y-2 border border-slate-200">
+                            <h4 class="font-bold text-xs text-apple-text flex items-center gap-1.5">
+                                <i class="fa-solid fa-stairs text-emerald-500"></i> Tácticas Bottom-Up
+                            </h4>
+                            <ul class="text-xs text-apple-subtext list-disc list-inside space-y-1">
+                                ${gtm.bottomUpTactics.map(t => `<li>${t}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+
+                // 4. Render Interview Questions
+                const interviewContent = document.getElementById('interviewContent');
+                interviewContent.innerHTML = '';
+                data.interviewQuestions.forEach((q, idx) => {
+                    const box = document.createElement('div');
+                    box.className = "bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1.5";
+                    box.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-md">Pregunta ${idx + 1}</span>
+                            <span class="text-[11px] text-apple-subtext font-medium">${q.objective}</span>
+                        </div>
+                        <p class="text-xs font-semibold text-apple-text">"${q.question}"</p>
+                        <p class="text-[11px] text-slate-500 pt-1 border-t border-slate-200/80">
+                            <strong>Qué escuchar con atención:</strong> ${q.whatToListenFor}
+                        </p>
+                    `;
+                    interviewContent.appendChild(box);
+                });
+
+                // 5. Render Raw Markdown
+                const markdownContainer = document.getElementById('markdownRendered');
+                if (window.marked) {
+                    markdownContainer.innerHTML = marked.parse(data.rawMarkdown || '');
+                } else {
+                    markdownContainer.innerText = data.rawMarkdown || '';
+                }
+
+                // Default active tab
+                this.switchTab('tab-personas');
+            },
+
+            switchTab(tabId) {
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(el => {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex');
+                });
+
+                // Reset tab button states
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('bg-brand-500', 'text-white', 'shadow-sm');
+                    btn.classList.add('text-apple-subtext', 'hover:bg-slate-100');
+                });
+
+                // Show selected tab content
+                const activeTab = document.getElementById(tabId);
+                if (activeTab) {
+                    activeTab.classList.remove('hidden');
+                    activeTab.classList.add('flex');
+                }
+
+                // Highlight active button
+                const activeBtn = document.getElementById(`btn-${tabId}`);
+                if (activeBtn) {
+                    activeBtn.classList.remove('text-apple-subtext', 'hover:bg-slate-100');
+                    activeBtn.classList.add('bg-brand-500', 'text-white', 'shadow-sm');
+                }
+            },
+
+            copyMarkdown() {
+                if (!this.currentData || !this.currentData.rawMarkdown) return;
+                const textarea = document.createElement('textarea');
+                textarea.value = this.currentData.rawMarkdown;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert("¡Informe Markdown copiado al portapapeles exitosamente!");
+            },
+
+            downloadJSON() {
+                if (!this.currentData) return;
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.currentData, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `StratBiz_Perfil_Mercado_${this.currentData.projectName.replace(/\s+/g, '_')}.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+            }
+        };
+
+        // Initialize App on DOM ready
+        window.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
+</body>
+</html>
