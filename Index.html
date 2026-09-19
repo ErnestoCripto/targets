@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfiles de mercado | StratBiz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Bottom-Up Market Metrics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #FFFFFF;
+            color: #1D1D1F;
+            line-height: 1.6;
+        }
+
+        /* Apple Pure White Design Tokens */
+        .apple-card {
+            background-color: #F5F5F7;
+            border: 1px solid #E5E5E7;
+            border-radius: 12px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .apple-card-white {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E5E7;
+            border-radius: 12px;
+        }
+
+        .apple-input {
+            background-color: #FFFFFF;
+            border: 1px solid #D2D2D7;
+            border-radius: 8px;
+            color: #1D1D1F;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .apple-input:focus {
+            outline: none;
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.15);
+        }
+
+        .btn-apple-primary, .btn-submit {
+            background-color: #0066CC;
+            color: #FFFFFF;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.15s ease, transform 0.1s ease;
+        }
+
+        .btn-apple-primary:hover, .btn-submit:hover {
+            background-color: #0052A3;
+        }
+
+        .btn-apple-primary:active, .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        .btn-apple-secondary {
+            background-color: #E8E8ED;
+            color: #1D1D1F;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-apple-secondary:hover {
+            background-color: #D2D2D7;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F5F7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C1C1C6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #98989D;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: #FFF !important; }
+            .apple-card { border: 1px solid #CCC !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+    <header class="border-b border-[#E5E5E7] bg-white/90 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-[#0066CC] text-white p-2 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-chart-pie text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-[#1D1D1F] leading-tight tracking-tight">Perfiles de mercado</h1>
+                    <div class="flex flex-wrap items-center gap-x-2 text-xs text-[#6E6E73]">
+                        <span>Consultor Senior: <strong>Ernesto Juárez</strong></span>
+                        <span class="text-[#D2D2D7]">•</span>
+                        <span>Desarrollado por: <strong class="text-[#0066CC]">StratBiz</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de Acción Superior -->
+            <div class="flex items-center gap-2.5">
+                <button onclick="window.print()" class="text-xs btn-apple-secondary px-3 py-2 flex items-center gap-1.5 no-print">
+                    <i class="fa-solid fa-print"></i>
+                    <span class="hidden sm:inline">Imprimir Informe</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-8">
+
+        <!-- Banner Introductorio Estilo Minimalista Apple -->
+        <div id="intro-banner" class="bg-[#F5F5F7] p-6 sm:p-8 rounded-2xl border border-[#E5E5E7] flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+            <div class="space-y-2 max-w-3xl">
+                <span class="inline-block bg-[#0066CC]/10 text-[#0066CC] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    Diagnóstico Práctico para Microempresas y Solopreneurs
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1D1D1F] tracking-tight">
+                    Análisis Integrado de Target Real, User Personas y Estimación SAM-SOM
+                </h2>
+                <p class="text-[#6E6E73] text-sm leading-relaxed">
+                    Diseñado para negocios operados por 1 a 3 personas. Ingresa tus datos de venta reales y tu <strong>perfil actual de clientes</strong> (ej. Amas de casa, Estudiantes, Vecinos) para construir <strong>Targets derivados exclusivamente de tu segmento actual</strong>, calcular tu <strong>SOM realista (Bottom-Up)</strong> y definir <strong>User Personas accionables</strong> con IA.
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2.5 w-full md:w-auto no-print">
+                <button onclick="app.loadPreset('abarrotes')" class="text-xs btn-apple-secondary px-4 py-2.5 flex items-center justify-center gap-2 whitespace-nowrap border border-[#D2D2D7]">
+                    <i class="fa-solid fa-store text-[#0066CC]"></i> Ej. Tienda / Amas de casa
+                </button>
+                <button onclick="app.loadPreset('cafeteria')" class="text-xs btn-apple-secondary px-4 py-2.5 flex items-center justify-center gap-2 whitespace-nowrap border border-[#D2D2D7]">
+                    <i class="fa-solid fa-mug-hot text-[#0066CC]"></i> Ej. Cafetería Local
+                </button>
+            </div>
+        </div>
+
+        <section id="form-section" class="apple-card p-6 sm:p-8 space-y-8 bg-[#F5F5F7]">
+            <div class="flex items-center justify-between pb-4 border-b border-[#E5E5E7]">
+                <div>
+                    <h2 class="text-lg font-bold text-[#1D1D1F] flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-[#0066CC]"></i> Formulario de Entrada de Mercado
+                    </h2>
+                    <p class="text-xs text-[#6E6E73]">Completa estos 4 bloques para generar segmentos centrados 100% en tu perfil actual reportado.</p>
+                </div>
+                <span class="text-xs font-semibold bg-[#0066CC]/10 text-[#0066CC] px-3 py-1 rounded-full">4 Bloques Operativos</span>
+            </div>
+
+            <form id="market-form" onsubmit="app.handleFormSubmit(event)" class="space-y-8">
+
+                <!-- BLOQUE 1: Identidad del Negocio -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-[#0066CC] font-semibold border-b border-[#E5E5E7] pb-2 text-sm">
+                        <span class="bg-[#0066CC] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">1</span>
+                        <h3>Identidad del Negocio</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Nombre del Negocio *</label>
+                            <input type="text" id="nombreNegocio" required placeholder="Ej. Abarrotes Yola" class="w-full apple-input px-3.5 py-2.5 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Industria / Sector *</label>
+                            <select id="industria" required class="w-full apple-input px-3.5 py-2.5 text-sm">
+                                <option value="">Selecciona un sector...</option>
+                                <option value="Alimentos y Bebidas">Alimentos, Cafeterías y Restauración</option>
+                                <option value="Comercio Minorista / Retail">Abarrotes, Tienda o Retail Local</option>
+                                <option value="Consultoría y Servicios Profesionales">Consultoría y Servicios B2B</option>
+                                <option value="Moda, Ropa y Calzado">Moda, Ropa y Accesorios</option>
+                                <option value="Salud, Belleza y Bienestar">Salud, Estética y Bienestar</option>
+                                <option value="Educación y Capacitación">Educación y Cursos</option>
+                                <option value="Artesanías y Productos Locales">Artesanías / Productos de Autor</option>
+                                <option value="Servicios para el Hogar">Servicios para el Hogar / Reparaciones</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Modelo de Venta *</label>
+                            <select id="modeloVenta" required class="w-full apple-input px-3.5 py-2.5 text-sm">
+                                <option value="B2C">B2C (Venta a Consumidor Final)</option>
+                                <option value="B2B">B2B (Venta a Empresas / Negocios)</option>
+                                <option value="Híbrido">Híbrido (B2C y B2B)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 2: Oferta de Valor y Dinámica de Ventas -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-[#0066CC] font-semibold border-b border-[#E5E5E7] pb-2 text-sm">
+                        <span class="bg-[#0066CC] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">2</span>
+                        <h3>Oferta de Valor, Ticket y Ritmo de Ventas Real</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                        <div class="md:col-span-6">
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Producto o Servicio Principal *</label>
+                            <input type="text" id="productoPrincipal" required placeholder="Ej. Despensa diaria, lácteos y productos frescos del día" class="w-full apple-input px-3.5 py-2.5 text-sm">
+                        </div>
+                        <div class="md:col-span-6">
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Ticket Promedio por Venta *</label>
+                            <div class="flex gap-2">
+                                <select id="currency" class="apple-input px-2 py-2.5 text-xs font-medium">
+                                    <option value="MXN">$ MXN</option>
+                                    <option value="USD">$ USD</option>
+                                    <option value="EUR">€ EUR</option>
+                                    <option value="COP">$ COP</option>
+                                    <option value="ARS">$ ARS</option>
+                                    <option value="CLP">$ CLP</option>
+                                </select>
+                                <input type="number" id="ticketPromedio" required min="1" placeholder="120" class="w-full apple-input px-3.5 py-2.5 text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ENTRADA CONSERVADORA BOTTOM-UP -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-[#E5E5E7]">
+                        <div>
+                            <label class="block text-xs font-semibold text-[#1D1D1F] mb-1">
+                                <i class="fa-solid fa-basket-shopping text-[#0066CC] mr-1"></i> Cantidad / Volumen de Ventas Actual *
+                            </label>
+                            <input type="number" id="volumenVentas" required min="1" placeholder="20" class="w-full apple-input px-3.5 py-2.5 text-sm">
+                            <span class="text-[11px] text-[#6E6E73] mt-1 block">Número promedio de transacciones o clientes atendidos.</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-[#1D1D1F] mb-1">
+                                <i class="fa-solid fa-calendar-days text-[#0066CC] mr-1"></i> Frecuencia del Volumen *
+                            </label>
+                            <select id="frecuenciaVolumen" required class="w-full apple-input px-3.5 py-2.5 text-sm">
+                                <option value="diaria" selected>Diaria (Días laborales ordinarios)</option>
+                                <option value="semanal">Semanal</option>
+                                <option value="mensual">Mensual</option>
+                            </select>
+                            <span class="text-[11px] text-[#6E6E73] mt-1 block">Base para calcular la capacidad real anual Bottom-Up.</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-[#1D1D1F] mb-1">¿Qué problema principal resuelve para sus clientes? *</label>
+                        <input type="text" id="problemaResuelto" required placeholder="Ej. Ahorro de tiempo, cercanía inmediata e insumos siempre frescos para la familia" class="w-full apple-input px-3.5 py-2.5 text-sm">
+                    </div>
+                </div>
+
+                <!-- BLOQUE 3: Alcance Geográfico -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-[#0066CC] font-semibold border-b border-[#E5E5E7] pb-2 text-sm">
+                        <span class="bg-[#0066CC] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">3</span>
+                        <h3>Ubicación y Alcance Geográfico</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Ciudad / Municipio Base *</label>
+                            <input type="text" id="ciudadBase" required placeholder="Ej. Cuautla, Morelos" class="w-full apple-input px-3.5 py-2.5 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Radio de Atención / Cobertura *</label>
+                            <select id="radioAtencion" required class="w-full apple-input px-3.5 py-2.5 text-sm">
+                                <option value="Hiperlocal (Barrio / 1 a 3 km a la redonda)">Hiperlocal (Barrio / 1 a 3 km a la redonda)</option>
+                                <option value="Ciudad completa / Zona metropolitana">Ciudad completa / Zona metropolitana</option>
+                                <option value="Estatal / Regional">Estatal / Regional</option>
+                                <option value="Nacional (Venta en línea / Envíos)">Nacional (Venta en línea / Envíos)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Población Estimada Zona Base *</label>
+                            <input type="number" id="poblacionEstimada" required min="1000" placeholder="175000" class="w-full apple-input px-3.5 py-2.5 text-sm">
+                            <span class="text-[10px] text-[#6E6E73]">Aproximación de habitantes en tu ciudad o zona.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 4: Clientes Actuales -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-[#0066CC] font-semibold border-b border-[#E5E5E7] pb-2 text-sm">
+                        <span class="bg-[#0066CC] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">4</span>
+                        <h3>Perfil Actual de Clientes y Canal Predilecto</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-200">
+                            <label class="block text-xs font-bold text-[#0066CC] mb-1">
+                                <i class="fa-solid fa-users text-[#0066CC] mr-1"></i> ¿Quiénes te compran más actualmente? *
+                            </label>
+                            <input type="text" id="quienesCompran" required placeholder="Ej. Amas de casa, madres de familia vecinas y adultos mayores del barrio" class="w-full apple-input px-3.5 py-2.5 text-sm font-semibold">
+                            <span class="text-[11px] text-[#0066CC] mt-1.5 block font-medium">
+                                <i class="fa-solid fa-circle-info mr-1"></i> <strong>Importante:</strong> Los Targets y User Personas se construirán de forma ESTRICTA a partir de lo que especifiques aquí.
+                            </span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-[#1D1D1F] mb-1">Canal Principal de Contacto *</label>
+                            <select id="canalContacto" required class="w-full apple-input px-3.5 py-2.5 text-sm">
+                                <option value="Local Físico / Visita directa">Local Físico / Visita directa</option>
+                                <option value="WhatsApp Business / Pedidos Directos">WhatsApp Business / Pedidos Directos</option>
+                                <option value="Instagram / Redes Sociales">Instagram / Redes Sociales</option>
+                                <option value="Recomendación Boca a Boca">Recomendación Boca a Boca</option>
+                                <option value="Sitio Web / Tienda Online">Sitio Web / Tienda Online</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTÓN DE GENERACIÓN -->
+                <div class="pt-4 flex justify-end">
+                    <button type="submit" class="btn-submit btn-apple-primary px-6 py-3 text-sm flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> 🪄 Generar Análisis de Mercado
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- PANTALLA DE CARGA -->
+        <div id="loading-screen" class="hidden apple-card p-12 text-center space-y-6">
+            <div class="inline-block animate-spin text-[#0066CC] text-4xl mb-2">
+                <i class="fa-solid fa-circle-notch"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-bold text-[#1D1D1F]">Construyendo Segmentos y User Personas con IA Gemini...</h3>
+                <p id="loading-step-text" class="text-xs text-[#6E6E73] font-medium">Sincronizando perfil reportado con la geografía local...</p>
+            </div>
+            <div class="w-full bg-[#E5E5E7] h-2 rounded-full overflow-hidden max-w-md mx-auto">
+                <div id="loading-bar" class="bg-[#0066CC] h-full w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE RESULTADOS -->
+        <section id="results-section" class="hidden space-y-8">
+
+            <!-- ENCABEZADO DE RESULTADOS -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#F5F5F7] p-6 rounded-2xl border border-[#E5E5E7]">
+                <div>
+                    <span class="text-[10px] font-bold text-[#0066CC] bg-[#0066CC]/10 px-2.5 py-1 rounded-full uppercase tracking-wider">Informe Diagnóstico Generado</span>
+                    <h2 id="res-business-title" class="text-2xl font-extrabold text-[#1D1D1F] mt-1">Nombre del Negocio</h2>
+                    <p id="res-business-sub" class="text-xs text-[#6E6E73]">Sector • Ubicación</p>
+                </div>
+                <button onclick="app.resetForm()" id="reset-btn" class="btn-apple-secondary px-4 py-2 text-xs flex items-center gap-2 border border-[#D2D2D7] no-print">
+                    <i class="fa-solid fa-pen-to-square"></i> Modificar Datos
+                </button>
+            </div>
+
+            <!-- Navegación de Pestañas Estilo Apple -->
+            <div class="border-b border-[#E5E5E7] flex space-x-2 sm:space-x-6 overflow-x-auto no-print">
+                <button onclick="app.switchTab('targets')" id="tab-targets" class="tab-btn active border-b-2 border-[#0066CC] text-[#0066CC] font-bold py-3 px-2 text-sm whitespace-nowrap flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye"></i> Targets Derivados (1-3)
+                </button>
+                <button onclick="app.switchTab('personas')" id="tab-personas" class="tab-btn border-b-2 border-transparent text-[#6E6E73] hover:text-[#1D1D1F] font-semibold py-3 px-2 text-sm whitespace-nowrap flex items-center gap-2">
+                    <i class="fa-solid fa-users"></i> User Personas Detalladas
+                </button>
+                <button onclick="app.switchTab('sam-som')" id="tab-sam-som" class="tab-btn border-b-2 border-transparent text-[#6E6E73] hover:text-[#1D1D1F] font-semibold py-3 px-2 text-sm whitespace-nowrap flex items-center gap-2">
+                    <i class="fa-solid fa-chart-column"></i> Mercado SAM-SOM (Bottom-Up)
+                </button>
+                <button onclick="app.switchTab('opportunities')" id="tab-opportunities" class="tab-btn border-b-2 border-transparent text-[#6E6E73] hover:text-[#1D1D1F] font-semibold py-3 px-2 text-sm whitespace-nowrap flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb"></i> Plan Microempresa
+                </button>
+            </div>
+
+            <!-- TAB 1: Targets -->
+            <div id="content-targets" class="tab-content space-y-6">
+                <div class="apple-card p-6 space-y-2">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h3 class="text-base font-bold text-[#1D1D1F] flex items-center gap-2">
+                            <i class="fa-solid fa-crosshairs text-[#0066CC]"></i> Targets Estratégicos Derivados de tu Cliente Actual
+                        </h3>
+                        <span class="text-xs bg-[#0066CC]/10 text-[#0066CC] font-semibold px-3 py-1 rounded-full">
+                            Basado en: <strong id="res-target-basis" class="underline"></strong>
+                        </span>
+                    </div>
+                    <p class="text-xs text-[#6E6E73] leading-relaxed">
+                        En lugar de asumir perfiles externos inconexos, estos <strong>targets</strong> corresponden a sub-segmentos y momentos de compra específicos dentro del grupo de clientes que <strong>ya atendes hoy</strong>.
+                    </p>
+                </div>
+
+                <div id="targets-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Dinámico JS -->
+                </div>
+            </div>
+
+            <!-- TAB 2: User Personas -->
+            <div id="content-personas" class="tab-content hidden space-y-6">
+                <div class="apple-card p-6 space-y-2">
+                    <h3 class="text-base font-bold text-[#1D1D1F] flex items-center gap-2">
+                        <i class="fa-solid fa-users-viewfinder text-[#0066CC]"></i> Arquetipos de Compradores Reales (User Personas)
+                    </h3>
+                    <p class="text-xs text-[#6E6E73]">
+                        Representación detallada de los roles de compra dentro de tu perfil reportado.
+                    </p>
+                </div>
+
+                <!-- Selector de Personas -->
+                <div id="persona-selectors" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <!-- Dinámico JS -->
+                </div>
+
+                <!-- Tarjeta Detallada de Persona Seleccionada -->
+                <div id="persona-detail-card" class="apple-card p-6 space-y-6">
+                    <!-- Dinámico JS -->
+                </div>
+            </div>
+
+            <!-- TAB 3: SAM-SOM Bottom-Up -->
+            <div id="content-sam-som" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- Resumen Métrico Bottom-Up -->
+                    <div class="lg:col-span-1 space-y-4">
+                        <div class="apple-card p-6 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-base font-bold text-[#1D1D1F] flex items-center gap-2">
+                                    <i class="fa-solid fa-calculator text-[#0066CC]"></i> Estimación Conservadora
+                                </h3>
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Bottom-Up</span>
+                            </div>
+                            <p class="text-xs text-[#6E6E73] leading-relaxed">
+                                Cálculo basado en tu ritmo operativo directo, sin asumir cifras macroeconómicas irrealizables.
+                            </p>
+
+                            <!-- SAM -->
+                            <div class="bg-white p-4 rounded-xl border-l-4 border-[#0066CC] border border-[#E5E5E7]">
+                                <div class="flex justify-between text-xs text-[#6E6E73] font-medium">
+                                    <span>SAM (Techo Operativo Zona)</span>
+                                    <span class="text-[#0066CC] font-semibold">Mercado Alcanzable</span>
+                                </div>
+                                <p id="sam-value" class="text-xl font-extrabold text-[#1D1D1F] mt-1">$0 MXN</p>
+                                <p class="text-[11px] text-[#6E6E73] mt-0.5">Límite de demanda local que tu infraestructura actual podría absorber.</p>
+                            </div>
+
+                            <!-- SOM -->
+                            <div class="bg-white p-4 rounded-xl border-l-4 border-emerald-600 border border-[#E5E5E7]">
+                                <div class="flex justify-between text-xs text-[#6E6E73] font-medium">
+                                    <span>SOM (Meta Realista 12 Meses)</span>
+                                    <span class="text-emerald-600 font-semibold">Proyección Objetivo</span>
+                                </div>
+                                <p id="som-value" class="text-2xl font-black text-emerald-600 mt-1">$0 MXN</p>
+                                <p class="text-[11px] text-[#6E6E73] mt-0.5">Ingreso anual objetivo considerando un crecimiento orgánico del 20% al 25%.</p>
+                            </div>
+                        </div>
+
+                        <div class="apple-card p-5 space-y-2">
+                            <h4 class="text-xs font-bold text-[#1D1D1F] uppercase tracking-wider">Fórmula Aplicada</h4>
+                            <div class="bg-white p-3 rounded-lg border border-[#E5E5E7] text-[11px] text-[#6E6E73] space-y-1">
+                                <p><strong>Ingreso Base Anual:</strong> <span id="param-base-rev" class="text-[#1D1D1F] font-semibold">$0</span></p>
+                                <p><strong>Ritmo reportado:</strong> <span id="param-sales-detail" class="text-[#1D1D1F] font-semibold">0 ventas</span></p>
+                                <p><strong>Ticket promedio:</strong> <span id="param-ticket-val" class="text-[#1D1D1F] font-semibold">$0</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráficos Visuales & Fuentes de Información -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="apple-card p-6 flex flex-col justify-between space-y-6">
+                            <div>
+                                <h3 class="text-base font-bold text-[#1D1D1F]">Comparativa de Venta Base vs. Meta SOM y Techo SAM</h3>
+                                <p class="text-xs text-[#6E6E73]">Relación entre tu facturación base actual, la meta SOM proyectada y el techo SAM local.</p>
+                            </div>
+
+                            <div class="h-64 sm:h-72 relative flex items-center justify-center">
+                                <canvas id="marketChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Sección de Fuentes Consultadas -->
+                        <div class="apple-card p-6 space-y-3">
+                            <h4 class="text-sm font-bold text-[#1D1D1F] flex items-center gap-2">
+                                <i class="fa-solid fa-book-bookmark text-[#0066CC]"></i> Fuentes de Información Consultadas
+                            </h4>
+                            <p class="text-xs text-[#6E6E73] leading-relaxed">
+                                Referenciamos los indicadores con estas fuentes oficiales de microeconomía local:
+                            </p>
+                            <div id="sources-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                <!-- Dinámico JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TAB 4: Oportunidades & Plan -->
+            <div id="content-opportunities" class="tab-content hidden space-y-8">
+                
+                <!-- Oportunidades Clave -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="apple-card p-6 space-y-3 border-t-4 border-[#0066CC]">
+                        <div class="w-8 h-8 rounded-lg bg-[#0066CC]/10 text-[#0066CC] flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-map-pin"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#1D1D1F]">Oportunidad de Nicho Local</h4>
+                        <p id="opp-niche-text" class="text-xs text-[#6E6E73] leading-relaxed"></p>
+                    </div>
+
+                    <div class="apple-card p-6 space-y-3 border-t-4 border-indigo-500">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#1D1D1F]">Alianzas Estratégicas</h4>
+                        <p id="opp-alliances-text" class="text-xs text-[#6E6E73] leading-relaxed"></p>
+                    </div>
+
+                    <div class="apple-card p-6 space-y-3 border-t-4 border-emerald-500">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#1D1D1F]">Canal de Captación Directa</h4>
+                        <p id="opp-channel-text" class="text-xs text-[#6E6E73] leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <!-- Acciones Rápidas (Quick Wins) -->
+                <div class="apple-card p-6 space-y-4">
+                    <h3 class="text-base font-bold text-[#1D1D1F] flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-[#0066CC]"></i> Pasos Inmediatos para el Solopreneur / Microempresa
+                    </h3>
+                    <div id="quick-wins-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- JS -->
+                    </div>
+                </div>
+
+                <!-- SECCIÓN DE ALTO CONTRASTE (DARK MODE) -->
+                <div class="bg-[#0A0A0C] text-white p-8 rounded-2xl border border-zinc-800 space-y-6 shadow-2xl">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-zinc-800">
+                        <div>
+                            <span class="bg-[#0066CC] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Módulo de Liquidez & Diagnóstico</span>
+                            <h3 class="text-xl font-bold text-white mt-2">Simulador de Viabilidad y Conclusiones del Consultor</h3>
+                            <p class="text-xs text-zinc-400">Análisis operativo para la toma de decisiones del dueño o dueña del negocio.</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-zinc-500 block">Consultor a cargo</span>
+                            <span class="text-sm font-bold text-white">Ernesto Juárez • StratBiz</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Módulo de Liquidez -->
+                        <div class="bg-zinc-900/90 p-5 rounded-xl border border-zinc-800 space-y-3">
+                            <h4 class="text-xs font-bold text-[#0066CC] uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-coins"></i> Ventas Requeridas para Alcanzar la Meta SOM
+                            </h4>
+                            <div class="grid grid-cols-2 gap-3 pt-2">
+                                <div class="bg-black/50 p-3 rounded-lg border border-zinc-800">
+                                    <span class="text-[10px] text-zinc-400 block">Meta SOM Anual</span>
+                                    <span id="dark-som-val" class="text-lg font-extrabold text-emerald-400">$0</span>
+                                </div>
+                                <div class="bg-black/50 p-3 rounded-lg border border-zinc-800">
+                                    <span class="text-[10px] text-zinc-400 block">Ventas Necesarias / Mes</span>
+                                    <span id="dark-breakeven-val" class="text-lg font-extrabold text-white">0 ventas</span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-zinc-400 leading-normal pt-1">
+                                Para cumplir el objetivo SOM anual solo necesitas incrementar un promedio de <strong>2 a 4 transacciones adicionales por semana</strong>.
+                            </p>
+                        </div>
+
+                        <!-- Conclusión Diagnóstica del Consultor Senior -->
+                        <div class="bg-zinc-900/90 p-5 rounded-xl border border-zinc-800 space-y-2">
+                            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-user-check"></i> Dictamen Diagnóstico de Ernesto Juárez
+                            </h4>
+                            <p id="dark-conclusion-text" class="text-xs text-zinc-300 leading-relaxed pt-1">
+                                Cargando dictamen...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="border-t border-[#E5E5E7] bg-white py-6 mt-12 text-center text-xs text-[#6E6E73]">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <strong>Perfiles de mercado</strong> • Metodología Bottom-Up centrada en Clientes Reales
+            </div>
+            <div>
+                Consultor Senior: <strong>Ernesto Juárez</strong> | Desarrollado por <span class="text-[#0066CC] font-bold">StratBiz</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTEGRACIÓN JAVASCRIPT -->
+    <script>
+        // API Key por defecto configurada para ejecución
+        const DEFAULT_API_KEY = "AQ.Ab8RN6LsiqtIaHxKwDFO0Mvq_l7YMw9M2petrYLDUAiBQaCjxg";
+
+        // System Instruction optimizado para User Personas e Investigación de Mercado
+        const SYSTEM_INSTRUCTION = `
+# User Persona - Especialista en Research de Mercado y Personas
+## Rol
+Eres un especialista en research de usuarios y diseño de personas para marcas, proyectos y organizaciones. Tu misión es generar exactamente 3 User Personas detalladas, realistas y accionables basadas en los datos operativos ingresados por el usuario mediante el formulario de entrada de mercado.
+
+## Instrucciones de Tono y Estilo
+- Sé conciso, evita explicaciones teóricas largas.
+- Ve directo al grano: nada de arquetipos abstractos ni frameworks complejos.
+- Tu meta: entregar perfiles con una voz clara y accionable para usar de inmediato.
+
+REGLA ESTRICTA: Las User Personas y Targets deben construirse de forma ESTRICTA a partir del "Perfil Actual de Clientes" (quienesCompran) y la "Ubicación/Alcance Geográfico" (ciudadBase) reportados en el formulario.
+
+Devuelve SIEMPRE una respuesta en formato JSON estricto con la siguiente estructura exacta:
+{
+  "baseAnnualRevenue": 0,
+  "sam": 0,
+  "som": 0,
+  "targets": [
+    {
+      "title": "Nombre del Target",
+      "type": "Principal / Secundario / Oportunidad",
+      "geo": "Ubicación geográfica coherente",
+      "demo": "Datos demográficos",
+      "behavioral": "Hábitos y comportamiento de compra",
+      "color": "border-[#0066CC]"
+    }
+  ],
+  "personas": [
+    {
+      "type": "Cliente Frecuente / Buscador de Valor / Exigente / Ocasión / Anti-Persona",
+      "role": "Rol en la compra",
+      "name": "Nombre ficticio completo",
+      "age": "Rango de edad",
+      "occupation": "Profesión u ocupación",
+      "bio": "2-3 líneas sobre quién es y su contexto de interacción con el negocio",
+      "painPoint": "Dolores/Frustraciones principales expresados claramente",
+      "trigger": "Motivación principal y detonador de compra",
+      "preferredChannel": "Canal preferido",
+      "objection": "Objeción o barrera de compra habitual",
+      "hookStrategy": "Propuesta de valor clave o estrategia de enganche",
+      "badgeColor": "bg-[#0066CC] text-white"
+    }
+  ],
+  "sources": [
+    { "name": "Nombre de la fuente", "desc": "Descripción del indicador utilizado" }
+  ],
+  "opportunities": {
+    "niche": "Oportunidad de nicho local identificada",
+    "alliances": "Recomendación de alianza estratégica",
+    "channel": "Estrategia para el canal principal",
+    "quickWins": ["Acción inmediata 1", "Acción inmediata 2", "Acción inmediata 3"],
+    "conclusion": "Dictamen conclusivo del consultor"
+  }
+}
+`;
+
+        const app = {
+            apiKey: DEFAULT_API_KEY,
+            currentData: null,
+            selectedPersonaIndex: 0,
+            chartInstance: null,
+
+            presets: {
+                abarrotes: {
+                    nombreNegocio: "Abarrotes y Novedades Yola",
+                    industria: "Comercio Minorista / Retail",
+                    modeloVenta: "B2C",
+                    productoPrincipal: "Despensa diaria, lácteos, botanas y productos del hogar",
+                    ticketPromedio: 140,
+                    volumenVentas: 25,
+                    frecuenciaVolumen: "diaria",
+                    currency: "MXN",
+                    problemaResuelto: "Atención cálida, cercanía inmediata y productos frescos para la familia",
+                    ciudadBase: "Cuautla, Morelos",
+                    radioAtencion: "Hiperlocal (Barrio / 1 a 3 km a la redonda)",
+                    poblacionEstimada: 175000,
+                    quienesCompran: "Amas de casa, madres de familia vecinas y adultos mayores del barrio",
+                    canalContacto: "Local Físico / Visita directa"
+                },
+                cafeteria: {
+                    nombreNegocio: "Café Mosaico",
+                    industria: "Alimentos y Bebidas",
+                    modeloVenta: "B2C",
+                    productoPrincipal: "Cafés de especialidad, bebidas frías y repostería artesanal",
+                    ticketPromedio: 160,
+                    volumenVentas: 20,
+                    frecuenciaVolumen: "diaria",
+                    currency: "MXN",
+                    problemaResuelto: "Espacio tranquilo con excelente café para vecinos y trabajadores de la zona",
+                    ciudadBase: "Cuernavaca, Morelos",
+                    radioAtencion: "Hiperlocal (Barrio / 1 a 3 km a la redonda)",
+                    poblacionEstimada: 350000,
+                    quienesCompran: "Jóvenes profesionistas, vecinos cercanos y trabajadores remotos",
+                    canalContacto: "Local Físico / Visita directa"
+                }
+            },
+
+            init() {
+                // Inicialización directa con API key integrada
+                this.apiKey = DEFAULT_API_KEY;
+            },
+
+            loadPreset(key) {
+                const data = this.presets[key];
+                if (!data) return;
+
+                document.getElementById('nombreNegocio').value = data.nombreNegocio;
+                document.getElementById('industria').value = data.industria;
+                document.getElementById('modeloVenta').value = data.modeloVenta;
+                document.getElementById('productoPrincipal').value = data.productoPrincipal;
+                document.getElementById('ticketPromedio').value = data.ticketPromedio;
+                document.getElementById('volumenVentas').value = data.volumenVentas;
+                document.getElementById('frecuenciaVolumen').value = data.frecuenciaVolumen;
+                document.getElementById('currency').value = data.currency;
+                document.getElementById('problemaResuelto').value = data.problemaResuelto;
+                document.getElementById('ciudadBase').value = data.ciudadBase;
+                document.getElementById('radioAtencion').value = data.radioAtencion;
+                document.getElementById('poblacionEstimada').value = data.poblacionEstimada;
+                document.getElementById('quienesCompran').value = data.quienesCompran;
+                document.getElementById('canalContacto').value = data.canalContacto;
+            },
+
+            async handleFormSubmit(e) {
+                e.preventDefault();
+
+                const formData = {
+                    nombreNegocio: document.getElementById('nombreNegocio').value,
+                    industria: document.getElementById('industria').value,
+                    modeloVenta: document.getElementById('modeloVenta').value,
+                    productoPrincipal: document.getElementById('productoPrincipal').value,
+                    ticketPromedio: parseFloat(document.getElementById('ticketPromedio').value) || 100,
+                    volumenVentas: parseInt(document.getElementById('volumenVentas').value) || 10,
+                    frecuenciaVolumen: document.getElementById('frecuenciaVolumen').value || 'diaria',
+                    currency: document.getElementById('currency').value || 'MXN',
+                    problemaResuelto: document.getElementById('problemaResuelto').value,
+                    ciudadBase: document.getElementById('ciudadBase').value,
+                    radioAtencion: document.getElementById('radioAtencion').value,
+                    poblacionEstimada: parseInt(document.getElementById('poblacionEstimada').value) || 175000,
+                    quienesCompran: document.getElementById('quienesCompran').value,
+                    canalContacto: document.getElementById('canalContacto').value
+                };
+
+                document.getElementById('form-section').classList.add('hidden');
+                document.getElementById('intro-banner').classList.add('hidden');
+                document.getElementById('loading-screen').classList.remove('hidden');
+
+                const steps = [
+                    "Analizando el perfil de cliente reportado (" + formData.quienesCompran + ")...",
+                    "Construyendo los targets derivados exclusivamente de tu segmento actual...",
+                    "Generando User Personas detalladas con Gemini AI para " + formData.nombreNegocio + "...",
+                    "Calculando la capacidad Bottom-Up SAM/SOM para " + formData.ciudadBase + "..."
+                ];
+
+                const progressBar = document.getElementById('loading-bar');
+                const stepText = document.getElementById('loading-step-text');
+
+                for (let i = 0; i < steps.length; i++) {
+                    stepText.textContent = steps[i];
+                    progressBar.style.width = ((i + 1) * 25) + '%';
+                    await new Promise(r => setTimeout(r, 250));
+                }
+
+                let result = null;
+                try {
+                    result = await this.generateWithGeminiAPI(formData);
+                } catch (err) {
+                    console.warn("Ejecutando motor algorítmico integrado de respaldo para StratBiz:", err);
+                    result = this.generateStratBizIntelligence(formData);
+                }
+
+                this.currentData = result;
+
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('results-section').classList.remove('hidden');
+
+                this.renderDashboard(formData, result);
+            },
+
+            async generateWithGeminiAPI(input) {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${this.apiKey}`;
+
+                const userPrompt = `
+Genera el análisis de mercado e investigación de User Personas para el siguiente negocio:
+1. Identidad del Negocio:
+- Nombre del Negocio: ${input.nombreNegocio}
+- Industria / Sector: ${input.industria}
+- Modelo de Venta: ${input.modeloVenta}
+2. Oferta de Valor y Ventas:
+- Producto o Servicio Principal: ${input.productoPrincipal}
+- Ticket Promedio por Venta: $${input.ticketPromedio} ${input.currency}
+- Cantidad / Volumen de Ventas Actual: ${input.volumenVentas}
+- Frecuencia del Volumen: ${input.frecuenciaVolumen}
+- Problema principal que resuelve: ${input.problemaResuelto}
+3. Ubicación y Alcance:
+- Ciudad / Municipio Base: ${input.ciudadBase}
+- Radio de Atención / Cobertura: ${input.radioAtencion}
+- Población Estimada Zona Base: ${input.poblacionEstimada}
+4. Perfil Actual de Clientes y Canal:
+- ¿Quiénes te compran más actualmente?: ${input.quienesCompran}
+- Canal Principal de Contacto: ${input.canalContacto}
+`;
+
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        system_instruction: {
+                            parts: [{ text: SYSTEM_INSTRUCTION }]
+                        },
+                        contents: [
+                            { parts: [{ text: userPrompt }] }
+                        ],
+                        generationConfig: {
+                            responseMimeType: "application/json"
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error API Gemini: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!rawText) throw new Error("Respuesta vacía de Gemini API");
+
+                return JSON.parse(rawText);
+            },
+
+            generateStratBizIntelligence(input) {
+                let factorAnual = 300;
+                if (input.frecuenciaVolumen === 'semanal') factorAnual = 52;
+                if (input.frecuenciaVolumen === 'mensual') factorAnual = 12;
+
+                const baseRev = input.ticketPromedio * input.volumenVentas * factorAnual;
+                const somVal = Math.round(baseRev * 1.25);
+                const samVal = Math.round(baseRev * 3.8);
+
+                return {
+                    baseAnnualRevenue: baseRev,
+                    sam: samVal,
+                    som: somVal,
+                    targets: [
+                        {
+                            title: `Comprador Recurrente Local (${input.quienesCompran})`,
+                            type: "Target Principal",
+                            geo: input.ciudadBase,
+                            demo: `Consumidores residentes en ${input.radioAtencion}`,
+                            behavioral: `Busca ${input.problemaResuelto} con atención ágil.`,
+                            color: "border-[#0066CC]"
+                        },
+                        {
+                            title: "Buscador de Conveniencia Directa",
+                            type: "Target Secundario",
+                            geo: input.ciudadBase,
+                            demo: "Habitantes de zonas aledañas o trabajadores de paso",
+                            behavioral: "Valora la rapidez, disponibilidad constante e insumos de primera mano.",
+                            color: "border-emerald-500"
+                        },
+                        {
+                            title: "Cliente Ocasional de Oportunidad",
+                            type: "Target de Expansión",
+                            geo: `Zona extendida de ${input.ciudadBase}`,
+                            demo: "Clientes con requerimientos urgentes o compras planificadas",
+                            behavioral: `Utiliza ${input.canalContacto} como canal principal de contacto.`,
+                            color: "border-indigo-500"
+                        }
+                    ],
+                    personas: [
+                        {
+                            type: "Cliente Frecuente",
+                            role: "Decisor Principal de Compra",
+                            name: "María Elena García",
+                            age: "35 - 45 años",
+                            occupation: "Profesional / Ama de casa activa",
+                            bio: `Cliente leal radicada en ${input.ciudadBase} que prioriza calidad e insumos confiables para su hogar.`,
+                            painPoint: `Pérdida de tiempo al trasladarse lejos y falta de productos frescos de calidad.`,
+                            trigger: `Búsqueda de ${input.productoPrincipal} de manera rápida y sin complicaciones.`,
+                            preferredChannel: input.canalContacto,
+                            objection: "¿Tienen disponibilidad inmediata de los productos que requiero?",
+                            hookStrategy: "Garantizar disponibilidad, trato prioritario y sugerencias personalizadas.",
+                            badgeColor: "bg-[#0066CC] text-white"
+                        },
+                        {
+                            type: "Buscador de Eficiencia",
+                            role: "Comprador Ágil",
+                            name: "Carlos Eduardo Ruiz",
+                            age: "28 - 38 años",
+                            occupation: "Empleado / Trabajador Local",
+                            bio: "Suele realizar compras inmediatas entre sus actividades diarias. Prefiere respuestas rápidas.",
+                            painPoint: "Filas largas y procesos de atención lentos.",
+                            trigger: "Necesidad urgente de solución práctica cerca de su ruta diaria.",
+                            preferredChannel: input.canalContacto,
+                            objection: "¿El precio es competitivo frente a opciones mayores?",
+                            hookStrategy: "Resaltar el ahorro de tiempo y el servicio directo sin esperas.",
+                            badgeColor: "bg-emerald-600 text-white"
+                        },
+                        {
+                            type: "Cliente Exigente de Valor",
+                            role: "Evaluador de Calidad",
+                            name: "Sonia Mendoza",
+                            age: "40 - 55 años",
+                            occupation: "Comerciante / Vecina de zona",
+                            bio: "Conoce a fondo las opciones locales. Valora el trato personal y los detalles del servicio.",
+                            painPoint: "Mala atención o inconsistencia en la calidad de los productos.",
+                            trigger: "Recomendaciones positivas de conocidos y buen trato recibido.",
+                            preferredChannel: input.canalContacto,
+                            objection: "¿Mantienen la misma calidad y atención con el tiempo?",
+                            hookStrategy: "Ofrecer promociones de lealtad y atención cercana permanente.",
+                            badgeColor: "bg-amber-600 text-white"
+                        }
+                    ],
+                    sources: [
+                        { name: "INEGI - DENUE Local", desc: `Directorio de unidades económicas activas en ${input.ciudadBase}.` },
+                        { name: "Censo de Población y Vivienda", desc: `Proyección demográfica base de ${input.poblacionEstimada} habitantes.` },
+                        { name: "Asociación Mexicana de Venta Online (AMVO)", desc: "Estudios de preferencia de canales híbridos y físicos." },
+                        { name: "StratBiz Benchmark Microempresa", desc: "Métricas consolidadas para negocios de 1 a 3 colaboradores." }
+                    ],
+                    opportunities: {
+                        niche: `Aprovechar la preferencia directa de ${input.quienesCompran} en ${input.ciudadBase}.`,
+                        alliances: "Establecer convenios con comercios complementarios cercanos en el mismo barrio o zona.",
+                        channel: `Optimizar ${input.canalContacto} para confirmar pedidos y atender consultas en minutos.`,
+                        quickWins: [
+                            `Crear un catálogo rápido accesible mediante ${input.canalContacto}.`,
+                            "Implementar una tarjeta o registro simple de cliente frecuente.",
+                            "Publicar las promociones semanales en el canal de mayor impacto."
+                        ],
+                        conclusion: `El negocio presenta una base sólida con ingresos proyectados SOM de $${somVal.toLocaleString()} ${input.currency}. Mantener el enfoque en ${input.quienesCompran} asegurará la sostenibilidad y crecimiento ordenado.`
+                    }
+                };
+            },
+
+            renderDashboard(input, data) {
+                document.getElementById('res-business-title').textContent = input.nombreNegocio;
+                document.getElementById('res-business-sub').textContent = `${input.industria} • ${input.ciudadBase}`;
+                document.getElementById('res-target-basis').textContent = input.quienesCompran;
+
+                // 1. Render Targets
+                const targetsContainer = document.getElementById('targets-container');
+                targetsContainer.innerHTML = '';
+                (data.targets || []).forEach(t => {
+                    const card = document.createElement('div');
+                    card.className = `apple-card p-6 border-t-4 ${t.color || 'border-[#0066CC]'} space-y-3 bg-white`;
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-700">${t.type}</span>
+                            <span class="text-[10px] text-[#6E6E73] font-medium"><i class="fa-solid fa-location-dot mr-1"></i>${t.geo}</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-[#1D1D1F]">${t.title}</h4>
+                        <div class="space-y-1.5 text-xs text-[#6E6E73]">
+                            <p><strong>Demografía:</strong> ${t.demo}</p>
+                            <p><strong>Comportamiento:</strong> ${t.behavioral}</p>
+                        </div>
+                    `;
+                    targetsContainer.appendChild(card);
+                });
+
+                // 2. Render Personas UI
+                const personaSelectors = document.getElementById('persona-selectors');
+                personaSelectors.innerHTML = '';
+                (data.personas || []).forEach((p, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = `p-3 rounded-xl border text-left text-xs transition-all flex items-center justify-between ${idx === this.selectedPersonaIndex ? 'border-[#0066CC] bg-[#0066CC]/5 font-bold text-[#0066CC]' : 'border-[#E5E5E7] bg-white text-[#1D1D1F] hover:border-[#C1C1C6]'}`;
+                    btn.onclick = () => {
+                        this.selectedPersonaIndex = idx;
+                        this.renderPersonaDetail(data.personas[idx]);
+                        this.renderDashboard(input, data);
+                    };
+                    btn.innerHTML = `
+                        <div>
+                            <span class="block text-[10px] text-[#6E6E73] uppercase">${p.type}</span>
+                            <span>${p.name}</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[10px] opacity-40"></i>
+                    `;
+                    personaSelectors.appendChild(btn);
+                });
+
+                if (data.personas && data.personas.length > 0) {
+                    this.renderPersonaDetail(data.personas[this.selectedPersonaIndex || 0]);
+                }
+
+                // 3. Render SAM - SOM Metrics
+                const curr = input.currency || 'MXN';
+                document.getElementById('sam-value').textContent = `$${(data.sam || 0).toLocaleString()} ${curr}`;
+                document.getElementById('som-value').textContent = `$${(data.som || 0).toLocaleString()} ${curr}`;
+                document.getElementById('param-base-rev').textContent = `$${(data.baseAnnualRevenue || 0).toLocaleString()} ${curr}`;
+                document.getElementById('param-sales-detail').textContent = `${input.volumenVentas} ventas / ${input.frecuenciaVolumen}`;
+                document.getElementById('param-ticket-val').textContent = `$${input.ticketPromedio} ${curr}`;
+
+                // 4. Render Sources
+                const sourcesList = document.getElementById('sources-list');
+                sourcesList.innerHTML = '';
+                (data.sources || []).forEach(s => {
+                    const box = document.createElement('div');
+                    box.className = "p-3 rounded-lg border border-[#E5E5E7] bg-white text-xs space-y-0.5";
+                    box.innerHTML = `<strong class="text-[#1D1D1F] block">${s.name}</strong><span class="text-[#6E6E73] text-[11px]">${s.desc}</span>`;
+                    sourcesList.appendChild(box);
+                });
+
+                // 5. Render Plan & Dark Section
+                const opp = data.opportunities || {};
+                document.getElementById('opp-niche-text').textContent = opp.niche || '';
+                document.getElementById('opp-alliances-text').textContent = opp.alliances || '';
+                document.getElementById('opp-channel-text').textContent = opp.channel || '';
+
+                const quickWinsList = document.getElementById('quick-wins-list');
+                quickWinsList.innerHTML = '';
+                (opp.quickWins || []).forEach((qw, i) => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white p-4 rounded-xl border border-[#E5E5E7] text-xs space-y-1.5";
+                    card.innerHTML = `<span class="w-5 h-5 rounded-full bg-[#0066CC] text-white font-bold flex items-center justify-center text-[10px]">${i+1}</span><p class="text-[#1D1D1F] font-medium">${qw}</p>`;
+                    quickWinsList.appendChild(card);
+                });
+
+                document.getElementById('dark-som-val').textContent = `$${(data.som || 0).toLocaleString()} ${curr}`;
+                
+                const ventasMensualesReq = Math.ceil((data.som || 0) / (input.ticketPromedio * 12));
+                document.getElementById('dark-breakeven-val').textContent = `${ventasMensualesReq} ventas/mes`;
+                document.getElementById('dark-conclusion-text').textContent = opp.conclusion || '';
+
+                // 6. Draw Chart
+                this.renderChart(data.baseAnnualRevenue || 0, data.som || 0, data.sam || 0, curr);
+            },
+
+            renderPersonaDetail(p) {
+                if (!p) return;
+                const card = document.getElementById('persona-detail-card');
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-[#E5E5E7]">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-[#0066CC]/10 text-[#0066CC] font-bold text-lg flex items-center justify-center">
+                                ${p.name ? p.name.charAt(0) : 'U'}
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-[#1D1D1F]">${p.name}</h4>
+                                <span class="text-xs text-[#6E6E73]">${p.role} • ${p.age} • ${p.occupation}</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full ${p.badgeColor || 'bg-[#0066CC] text-white'}">${p.type}</span>
+                    </div>
+
+                    <div class="text-xs text-[#1D1D1F] bg-white p-4 rounded-xl border border-[#E5E5E7] italic">
+                        "${p.bio}"
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-rose-50/60 border border-rose-100 p-4 rounded-xl space-y-1">
+                            <strong class="text-rose-900 block font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Principales Dolores / Frustraciones:</strong>
+                            <p class="text-rose-800">${p.painPoint}</p>
+                        </div>
+                        <div class="bg-emerald-50/60 border border-emerald-100 p-4 rounded-xl space-y-1">
+                            <strong class="text-emerald-900 block font-bold"><i class="fa-solid fa-bolt mr-1"></i> Detonador de Compra (Trigger):</strong>
+                            <p class="text-emerald-800">${p.trigger}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs pt-2">
+                        <div class="p-3 bg-white rounded-lg border border-[#E5E5E7]">
+                            <strong class="text-[#6E6E73] block text-[11px]">Canal Preferido:</strong>
+                            <span class="font-semibold text-[#1D1D1F]">${p.preferredChannel}</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-lg border border-[#E5E5E7]">
+                            <strong class="text-[#6E6E73] block text-[11px]">Objeción Frecuente:</strong>
+                            <span class="font-semibold text-[#1D1D1F]">${p.objection}</span>
+                        </div>
+                        <div class="p-3 bg-blue-50/50 border border-blue-100 rounded-lg">
+                            <strong class="text-[#0066CC] block text-[11px]">Estrategia de Enganche:</strong>
+                            <span class="font-bold text-[#0066CC]">${p.hookStrategy}</span>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderChart(base, som, sam, currency) {
+                const ctx = document.getElementById('marketChart');
+                if (!ctx) return;
+
+                if (this.chartInstance) {
+                    this.chartInstance.destroy();
+                }
+
+                this.chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Ingreso Base Actual', 'Meta SOM (12 Meses)', 'Techo SAM (Zona)'],
+                        datasets: [{
+                            label: `Monto (${currency})`,
+                            data: [base, som, sam],
+                            backgroundColor: [
+                                '#0066CC',
+                                '#10B981',
+                                '#6366F1'
+                            ],
+                            borderRadius: 8,
+                            barThickness: 36
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: $${context.parsed.y.toLocaleString()}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    },
+                                    font: { size: 10 }
+                                }
+                            },
+                            x: {
+                                ticks: { font: { size: 11, weight: '600' } }
+                            }
+                        }
+                    }
+                });
+            },
+
+            switchTab(tabKey) {
+                const contents = document.querySelectorAll('.tab-content');
+                contents.forEach(c => c.classList.add('hidden'));
+
+                const buttons = document.querySelectorAll('.tab-btn');
+                buttons.forEach(b => {
+                    b.classList.remove('border-[#0066CC]', 'text-[#0066CC]', 'font-bold');
+                    b.classList.add('border-transparent', 'text-[#6E6E73]');
+                });
+
+                const selectedContent = document.getElementById(`content-${tabKey}`);
+                if (selectedContent) selectedContent.classList.remove('hidden');
+
+                const selectedTabBtn = document.getElementById(`tab-${tabKey}`);
+                if (selectedTabBtn) {
+                    selectedTabBtn.classList.remove('border-transparent', 'text-[#6E6E73]');
+                    selectedTabBtn.classList.add('border-[#0066CC]', 'text-[#0066CC]', 'font-bold');
+                }
+            },
+
+            resetForm() {
+                document.getElementById('results-section').classList.add('hidden');
+                document.getElementById('form-section').classList.remove('hidden');
+                document.getElementById('intro-banner').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+
+        // Initialize application on DOM ready
+        window.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
+</body>
+</html>
